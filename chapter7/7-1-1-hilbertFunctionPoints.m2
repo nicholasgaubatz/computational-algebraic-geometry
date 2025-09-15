@@ -3,7 +3,7 @@
 hilbertFunctionPoints = (X, i) -> (
     -- Get a list of evaluation maps from R to the underlying field k using the
     -- points in X
-    maps = apply(X, L -> map(R, R, L));
+    maps = apply(X, p -> map(R, R, p));
     -- Get a list of the monomials of degree i in R
     basisI = (entries(basis(i, R)))#0;
     -- Create a small function to take in a function f and apply it to the above

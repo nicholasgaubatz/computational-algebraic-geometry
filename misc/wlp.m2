@@ -13,29 +13,5 @@ WLP = (A) -> (
         if rank M < greatestRank then return "A does not have WLP at A_" | toString i;
         i = i+1;
     );
-    return "A has WLP";
+    return "The AOT algebra has WLP";
 )
-
--------------------------------------
-
-R = ZZ/101[x,y]
-
--- An algebra that has WLP
-I = ideal(x^2,y^3)
-A = R/I
-WLP(A)
-
--- A non-Artinian algebra
-J = ideal(x*y,y^2)
-A = R/J
-WLP(A)
-
--- An algebra that fails WLP at A_2
-R = ZZ/101[a..f]
-I = ideal(a^2, b^2, c^2, d^2, e^2, f^2, a*b, c*d, e*f)
-A = R/I
-WLP(A)
-
--- Examine the matrix A_2 -> A_3
-M = (sum gens A) * basis(2,A) // basis(3,A)
-rank M
