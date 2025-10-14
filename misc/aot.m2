@@ -14,7 +14,7 @@ OTAlgebra = (L) -> (
     inds := positions(degs, i -> i=={1}); -- Determine columns where max degree is 1.
     deps := (entries transpose M)_inds;
     deps1 := deps / (dep -> apply(dep, i -> f(i)));
-    rels := apply(deps1, dep -> sum(apply(dep, gens S, (a, y) -> a*y)));
+    rels := apply(deps1, dep -> sum(apply(dep, gens S, (scalar, y) -> scalar*product(select(gens S, i -> (i != y))))));
 
     -- Compute and return the OT Algebra
     J := ideal rels;
@@ -22,10 +22,10 @@ OTAlgebra = (L) -> (
 )
 
 AOTAlgebra = (L) -> (
-    A = OTAlgebra L;
-    T = ambient A;
-    I = ideal A;
-    squares = ideal((gens T) / (i -> i^2));
+    A := OTAlgebra L;
+    T := ambient A;
+    I := ideal A;
+    squares := ideal((gens T) / (i -> i^2));
     return T/(I + squares);
 )
 
@@ -34,10 +34,15 @@ AOTAlgebra = (L) -> (
 -- Load this file. Ensure that the terminal is open in the computational-algebraic-geometry/ directory.
 -- load "misc/aot.m2"
 
+-- Test the OT algebra function on a very small example.
 R = QQ[x,y]
 L = {x, y, x+y}
 A = OTAlgebra L
 describe A
+
+-- Verify that it matches the HyperplaneArrangements package's implementation.
+loadPackage("HyperplaneArrangements", Reload=>true)
+orlikTerao arrangement L
 
 B = AOTAlgebra L
 describe B
