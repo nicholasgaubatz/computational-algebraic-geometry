@@ -101,13 +101,15 @@ elapsedTime allGraphsEdges = allGraphsEdges / (L -> (L / (e -> {e#0+1, e#1+1})))
 -- We're very finicky here, because it appears everything depends on the ordering of the variables in the defining linear forms of the hyperplanes.
 elapsedTime allGraphicArrangements = allGraphsEdges / (L -> (L / (e -> (varsList#(min(e)-1) - varsList#(max(e)-1)))));
 -- Construct the AOTs.
-elapsedTime allAOTAlgebras = allGraphicArrangements / (A -> AOTAlgebra(A, MonomialOrder=>Lex));
+-- elapsedTime allAOTAlgebras = allGraphicArrangements / (A -> AOTAlgebra(A, MonomialOrder=>Lex));
+elapsedTime allOTAlgebras = allGraphicArrangements / (A -> orlikTerao arrangement A);
+elapsedTime allAOTAlgebras = allOTAlgebras / (I -> ((ring I) / (I + ideal((gens ring I) / (x -> x^2)))));
 -- Determine whether these arrangements have WLP.
--- elapsedTime allWLP = allAOTAlgebras / (A -> WLP(A) == "The AOT algebra has WLP") -- Takes too long for n=6.
+elapsedTime allWLP = allAOTAlgebras / (A -> WLP(A) == "The AOT algebra has WLP") -- Takes too long for n=6.
 --  Get all graphs whose arrangements fail WLP.
--- allGraphs_(positions(allWLP, i -> i == false))
+allGraphs_(positions(allWLP, i -> i == false))
 -- Get all graphs whose arrangements satisfy WLP.
--- allGraphs_(positions(allWLP, i -> i == true))
+allGraphs_(positions(allWLP, i -> i == true))
 
 -- Just as another sanity check, let's check WLP using the Hilbert series.
 -- This may also be quicker than the above.
