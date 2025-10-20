@@ -141,6 +141,7 @@ directory | "allGraphicArrangements.m2" << allGraphicArrangements << endl << clo
 directory | "allAOTAlgebrasAsStrings.m2" << allAOTAlgebrasAsStrings << endl << close;
 directory | "allHilbSeries.m2" << allHilbSeries << endl << close;
 directory | "allHilbSeriesL.m2" << allHilbSeriesL << endl << close;
+directory | "allBadGraphs.m2" << (allGraphs_(positions(allWLPv2, i -> i == false)) / (G -> toString G)) << endl << close;
 
 ------------------------------------------------
 
@@ -152,6 +153,7 @@ allGraphicArrangements1 = value get (directory | "allGraphicArrangements.m2");
 allAOTAlgebrasAsStrings1 = value get (directory | "allAOTAlgebrasAsStrings.m2");
 allHilbSeries1 = value get (directory | "allHilbSeries.m2");
 allHilbSeriesL1 = value get (directory | "allHilbSeriesL.m2");
+allBadGraphs = value get (directory | "allBadGraphs.m2");
 
 -- Compare the Hilbert series.
 
