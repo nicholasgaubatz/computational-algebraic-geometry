@@ -1,10 +1,10 @@
-# artifacts/n=7
+# artifacts
 
-This directory contains some results for graphs on 7 vertices. Checking WLP for all 853
-isomorphism classes took about an hour and a half, so to avoid redoing this we store
+This directory contains some results for graphs on $n$ vertices. Checking WLP for all
+isomorphism classes can take a really long time, so to avoid redoing this we store
 results here.
 
-## Files:
+## Files (artifacts/n=...):
 
 - `allAOTAlgebrasAsStrings.m2`: loadable QuotientRings for all graphs of the given
   number of vertices.
