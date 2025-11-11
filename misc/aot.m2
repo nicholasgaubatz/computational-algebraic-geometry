@@ -1,38 +1,7 @@
-loadPackage("Graphs", Reload=>true)
-loadPackage("NautyGraphs", Reload=>true)
-loadPackage("HyperplaneArrangements", Reload=>true)
-
--- Given a list of hyperplanes, construct the Artinian Orlik-Terao algebra.
-AOTAlgebra = (L) -> (
-    I = orlikTerao(arrangement L);
-    T = ring I;
-    squares = ideal((gens T) / (i -> i^2));
-    return T/(I + squares);
-)
-
--- Given a quotient ring, construct the new quotient ring using the ideal's initial ideal.
-leadTermQuotient = (A) -> (
-    R = ambient A;
-    I = ideal A;
-    return R/(ideal leadTerm I);
-)
-
--- Take in an Artinian algebra and return a list of its nonzero Hilbert series entries.
-hilbertSeriesAsList = (A) -> (
-    hilbSer := hilbertSeries(A, Reduce=>true);
-    if value(denominator hilbSer != Product(1)) == true then return "Error" else (
-        pol := numerator hilbSer;
-        coefs := (entries(flatten((coefficients(pol))#1)))#0;
-        return coefs / (a -> (map(ZZ, ring coefs#0))(a));
-    );
-)
-
--------------------------------------
-
 -- Load this file. Ensure that the terminal is open in the computational-algebraic-geometry/ directory.
 -- load "misc/aot.m2"
 
-load "misc/wlp.m2"
+load "wlp.m2"
 
 --------------------------------------
 
@@ -40,7 +9,7 @@ load "misc/wlp.m2"
 -- certain number of vertices at a time.
 
 -- Configs: set the number of vertices to examine and ground field of the polynomial ring.
-n = 5;
+n = 7;
 groundField = QQ;
 
 -- Compute the polynomial ring.
@@ -48,7 +17,7 @@ R = groundField[toList vars(0..(n-1))];
 varsList = gens R;
 -- Use NautyGraphs to generate all isomorphism classes of graphs of the given number of vertices.
 elapsedTime allGraphs = generateGraphs(n, OnlyConnected=>true) / (str -> stringToGraph str);
-elapsedTime allGraphs = (generateGraphs(n) / (str -> stringToGraph str))_{2..(#allGraphs)};
+-- elapsedTime allGraphs = (generateGraphs(n) / (str -> stringToGraph str))_{1..(#allGraphs)};
 #allGraphs
 -- Get all the edges of these graphs.
 elapsedTime allGraphsEdges = allGraphs / (e -> edges e);
@@ -101,7 +70,7 @@ allGraphs_(positions(allWLPv2, i -> i == false))
 
 -- Save the above so we don't have to recompute everything.
 
-directory = "artifacts/n=" | n | "/"
+directory = "../artifacts/n=" | n | "/"
 directory | "allGraphicArrangements.m2" << allGraphicArrangements << endl << close;
 directory | "allAOTAlgebrasAsStrings.m2" << allAOTAlgebrasAsStrings << endl << close;
 directory | "allHilbSeries.m2" << allHilbSeries << endl << close;
@@ -113,7 +82,7 @@ directory | "allBadGraphs.m2" << (allGraphs_(positions(allWLP, i -> i == false))
 -- Load everything saved above and get all the graphs that don't satisfy WLP.
 
 -- Load the files.
-directory = "artifacts/n=" | n | "/"
+directory = "../artifacts/n=" | n | "/"
 allGraphicArrangements1 = value get (directory | "allGraphicArrangements.m2");
 allAOTAlgebrasAsStrings2 = value get (directory | "allAOTAlgebrasAsStrings.m2");
 allHilbSeries1 = value get (directory | "allHilbSeries.m2");
@@ -136,6 +105,12 @@ allWLPv21 = apply(allDiffs1, allHilbSeriesLPadded1, (L, K) -> L == K)
 allGraphs1_(positions(allWLPv21, i -> i == false))
 #positions(allWLPv21, i -> i == false)
 #allGraphs1
+
+k = 18;
+L = allGraphicArrangements#k;
+WLPcheck ideal(allAOTAlgebras#k)
+WLP(allAOTAlgebras#k)
+graphicArrToGraph L
 
 ------------------------------------------------
 
