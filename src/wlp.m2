@@ -1,5 +1,5 @@
 -- A function to determine whether an Artinian algebra $R/I$ has the weak Lefschetz
--- property.
+-- property. Written by Nicholas.
 WLP = (A) -> (
     if dim(A)>0 then return "Error: algebra is not Artinian!";
     
@@ -19,6 +19,7 @@ WLP = (A) -> (
     return "The AOT algebra has WLP";
 )
 
+-- From Hal.
 socleDegree = (I) ->(A:=(ring I)/I;
                                   m:=ideal vars A;
 				  j:=0;
@@ -26,10 +27,10 @@ socleDegree = (I) ->(A:=(ring I)/I;
 				  return j-1
 				  )
 
--- From Hal.
+-- From Hal. Typically faster than my function above.
 WLPcheck = (I) ->(R := ring(I);
-                 L := random(R^{1},R^1); --get random linear form
-			     Acut := coker((gens I)|L); --quotient by random linear form
+                 ell := random(R^{1},R^1); --get random linear form
+			     Acut := coker((gens I)|ell); --quotient by random linear form
 			     SD := socleDegree(I);
 			     A := coker gens I;
 			     INJorSURJ := apply(SD+1, i->({((hilbertFunction(i,A)+ hilbertFunction(i+1,Acut))==hilbertFunction(i+1,A)),

@@ -1,12 +1,19 @@
+-- This file contains some functions for AOT algebra construction and analysis.
+
+-- Imports.
 loadPackage("Graphs", Reload=>true)
 loadPackage("NautyGraphs", Reload=>true)
 loadPackage("HyperplaneArrangements", Reload=>true)
 
--- Given a list of hyperplanes, construct the Artinian Orlik-Terao algebra.
-AOTAlgebra = (L) -> (
-    I = orlikTerao(arrangement L);
-    T = ring I;
-    squares = ideal((gens T) / (i -> i^2));
+
+-- Given an arrangement of hyperplanes, construct the Artinian Orlik-Terao algebra.
+AOTAlgebra = method(Options => {NaiveAlgorithm => false})
+AOTAlgebra(List) := QuotientRing => o -> (L) -> (
+    I := orlikTerao(arrangement L, QQ[y_1..y_(#L)], NaiveAlgorithm=>o.NaiveAlgorithm);
+    -- NaiveAlgorithm gives an ideal in ZZ if the arrangement has no dependencies, but this won't do.
+    if ring(I)===ZZ then (I = ideal(0_(QQ[y_1..y_(#L)]))) else ();
+    T := ring I;
+    squares := ideal((gens T) / (i -> i^2));
     return T/(I + squares);
 )
 
@@ -27,7 +34,8 @@ hilbertSeriesAsList = (A) -> (
     );
 )
 
--- Use https://csacademy.com/app/graph_editor/ to visualize output.
+-- Use https://csacademy.com/app/graph_editor/ to visualize output from this function.
+-- Assumes each variable is just one character.
 graphicArrToGraph = (L) -> (
     apply(L, h -> (
         h1 := toString((flatten entries gens ideal h)#0);

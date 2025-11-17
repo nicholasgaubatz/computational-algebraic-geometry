@@ -9,7 +9,7 @@ load "wlp.m2"
 -- certain number of vertices at a time.
 
 -- Configs: set the number of vertices to examine and ground field of the polynomial ring.
-n = 7;
+n = 4;
 groundField = QQ;
 
 -- Compute the polynomial ring.
