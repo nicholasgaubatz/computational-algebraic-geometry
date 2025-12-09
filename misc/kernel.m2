@@ -22,17 +22,17 @@ Bi = super basis(i, coker gens TotIdeal);
 Bi1 = super basis(i+1, coker gens TotIdeal);
 ell = sum apply((entries A)#0, (entries Y)#0, (i,j) -> i*j)
 M = ell * Bi // Bi1
-rank M
+elapsedTime rank M
 
 -- Examine the kernel and cokernel.
-kernel1 = kernel transpose M
-cokernel1 = kernel M
+kernel1 = kernel M
+cokernel1 = kernel transpose M
 
 -- Determine a true element of the cokernel.
 cokernel2 = generators cokernel1
 cokernel3 = map(target cokernel2, source cokernel2, cokernel2);
 cokernel4 = submatrix(cokernel3, , {0})
-eltOfCoker = (entries(Bi1 * cokernel4))#0#0
+eltOfCoker = (entries(Bi * cokernel4))#0#0
 
 -- Determine whether it factors!
 factor eltOfCoker
