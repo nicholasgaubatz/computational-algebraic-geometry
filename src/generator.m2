@@ -63,10 +63,10 @@ WLPHashToFileFormat = (hashTable1) -> (
 
 -- Given a graph G, a file path f, and an integer i, call graphToWLPHash(G) and store the result at f.
 saveGraphHash = (G1, path1, i1) -> (
-    ht := graphToWLPHash G1;
-    htCommands := WLPHashToCommands ht;
-    -- ht := pairs WLPHashToFileFormat graphToWLPHash G1;
     if fileExists path1 then (error("File " | path1 | " already exists!")) else (
+        ht := graphToWLPHash G1;
+        htCommands := WLPHashToCommands ht;
+        -- ht := pairs WLPHashToFileFormat graphToWLPHash G1;
         path1 << ht << endl << endl << endl << htCommands << endl << close;
     );
 )
